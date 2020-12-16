@@ -89,4 +89,21 @@ app.put('/quotes/:id', async (req, res) => {
 
 });
 
+// Send a delete request to /quotes/:id route to delete quote.
+app.delete('/quotes/:id', async (req, res) => {
+
+    try {
+        const quote = await records.getQuote(req.params.id);
+        if (quote) {
+            await records.deleteQuote(quote);
+            res.status(204).end();
+        } else {
+            res.status(404).json({ message: "Quote not found." });
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+
+});
+
 app.listen(3000, () => console.log('API listening on localhost:3000'));
