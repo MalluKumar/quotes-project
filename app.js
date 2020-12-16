@@ -5,6 +5,11 @@ app.get('/', (req, res) => {
     res.json({ greeting: "Hello Welcome!!" });
 });
 
+// Send a GET request to /quotes to Read or view all the quotes.
+app.get('/quotes', (req, res) => {
+    res.json(data);
+});
+
 app.listen(3000, () => console.log('API listening on localhost:3000'));
 
 const data = {
