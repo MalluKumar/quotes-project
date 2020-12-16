@@ -7,9 +7,13 @@ app.use(express.json());
 app.get('/', (req, res) => {
 
     try {
-        res.json({ greeting: "Hello Welcome!!" });
+        if (res.statusCode === 200) {
+            res.json({ greeting: "Hello Welcome!!" });
+        } else {
+            res.status(500).json({ message: "Something's wrong, try after sometime." });
+        }
     } catch (err) {
-        res.json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
 
 });
@@ -19,9 +23,13 @@ app.get('/quotes', async (req, res) => {
 
     try {
         const quotes = await records.getQuotes();
-        res.json(quotes);
+        if (quotes) {
+            res.json(quotes);
+        } else {
+            res.json({ message: "No quote records to display." });
+        }
     } catch (err) {
-        res.json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
 
 });
@@ -31,9 +39,13 @@ app.get('/quotes/:id', async (req, res) => {
 
     try {
         const recordData = await records.getQuote(req.params.id);
-        res.json(recordData);
+        if (recordData) {
+            res.json(recordData);
+        } else {
+            res.status(404).json({ message: "Quote record not found" });
+        }
     } catch (err) {
-        res.json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
 
 });
@@ -42,11 +54,16 @@ app.get('/quotes/:id', async (req, res) => {
 app.post('/quotes', async (req, res) => {
 
     try {
-        const newQuote = await records.createQuote({
-            quote: req.body.quote,
-            author: req.body.author
-        });
-        res.json(newQuote);
+        if (req.body.quote && req.body.author) {
+            const newQuote = await records.createQuote({
+                quote: req.body.quote,
+                author: req.body.author
+            });
+            res.status(201).json(newQuote);
+        } else {
+            res.status(400).json({ message: "quote and author information required." });
+        }
+
     } catch (err) {
         res.json({ message: err.message });
     }
