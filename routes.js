@@ -97,4 +97,10 @@ router.delete('/quotes/:id', asyncHandler(async (req, res) => {
     }
 }));
 
+// Send a GET request to generate random quote.
+router.get('/quotes/quote/random', asyncHandler(async (req, res) => {
+    const quote = await records.getRandomQuote();
+    res.json(quote);
+}));
+
 module.exports = router;
