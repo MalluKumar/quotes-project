@@ -41,6 +41,7 @@ async function getQuote(id) {
   const quotes = await getQuotes();
   return quotes.records.find(record => record.id == id);
 }
+
 /**
  * Gets a random quote 
  * @param None
