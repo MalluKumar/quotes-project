@@ -5,9 +5,16 @@ app.get('/', (req, res) => {
     res.json({ greeting: "Hello Welcome!!" });
 });
 
-// Send a GET request to /quotes to Read or view all the quotes.
+// Send a GET request to /quotes to read or view all the quotes.
 app.get('/quotes', (req, res) => {
     res.json(data);
+});
+
+// Send a GET request to /quotes/:id to read or view a quote.
+app.get('/quotes/:id', (req, res) => {
+    const id = req.params.id;
+    const quote = data.records.find(record => record.id == id);
+    res.json(quote);
 });
 
 app.listen(3000, () => console.log('API listening on localhost:3000'));
